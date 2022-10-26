@@ -5,7 +5,8 @@ The purpose of this README file is to instruct the user on how to set up the pro
 Requirements:
 * Numpy
 * OpenCV
-These can be obtain using "pip install (import name)
+
+These can be obtain using "pip install (import name)"
 
 # How to set up on Arduino Uno
 Requirements:
