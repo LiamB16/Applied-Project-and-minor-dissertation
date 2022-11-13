@@ -8,7 +8,10 @@ DROP TABLE IF EXISTS `Persons`;
 CREATE TABLE `Persons` (
 `name` char(30) NOT NULL,
 `age` int,
-`occupation` char(30)
+`occupation` char(30),
+`img` longblob,
+`IsAdmin` char(10)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 UNLOCK TABLES;
