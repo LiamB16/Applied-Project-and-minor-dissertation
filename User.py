@@ -15,7 +15,7 @@ c.execute("Insert into persons values('Liam', 22, 'student', 'c:/users/Liam', 'Y
 db.commit(); #commits changes to database
 for x in c:
     print(x)
-    
+
 c.execute("delete from persons where name = 'Liam';")
 db.commit(); #commits changes to database
 for x in c:
