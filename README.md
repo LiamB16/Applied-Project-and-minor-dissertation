@@ -5,6 +5,7 @@ The purpose of this README file is to instruct the user on how to set up the pro
 Requirements:
 * Numpy
 * OpenCV
+* face_recognition
 
 These can be obtain using "pip install (import name)"
 
