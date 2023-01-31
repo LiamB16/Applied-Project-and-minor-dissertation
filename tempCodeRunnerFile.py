@@ -1,1 +1,1 @@
-_,
+(camera.isOpened())
