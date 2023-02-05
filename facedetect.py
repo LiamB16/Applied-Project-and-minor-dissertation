@@ -1,6 +1,9 @@
 import pathlib
 import cv2
 
+ID = "" #variable used to ID individual 
+
+#SQL query gets data using ID variable
 name = "Liam Bryant"
 age = "22"
 occupation = "student"
@@ -24,14 +27,15 @@ while (True): #fixes issue of program crashing due to
     )
     
     for(x, y, width, height) in faces:
-        cv2.rectangle(frame, (x, y), (x+width, y+height), (255, 255, 0), 2)
-        cv2.putText(frame, name, (x, y-50), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
+        cv2.rectangle(frame, (x, y), (x+width, y+height), (255, 255, 0), 2) #draws rectangle around head
+        cv2.putText(frame, "name: " +name, (x, y-50), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
              0.75, (0, 255, 0), 2)
-        cv2.putText(frame, age, (x, y-22), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
+        cv2.putText(frame, "age: " + age, (x, y-22), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
              0.75, (0, 255, 0), 2)
-        cv2.putText(frame, occupation, (x, y), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
+        cv2.putText(frame, "occupation: " + occupation, (x, y), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
              0.75, (0, 255, 0), 2)
-        print("G0037746")
+        ID = "G00377746"
+        print(ID)
         
     cv2.imshow("FACES", frame)
     if cv2.waitKey(1) == ord("q"):

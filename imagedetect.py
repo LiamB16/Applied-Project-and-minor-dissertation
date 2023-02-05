@@ -26,6 +26,7 @@ while (True):
        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
        
 # Display the output
-    cv2.imshow('img', img)
+    imS = cv2.resize(img, (540, 540))
+    cv2.imshow('img', imS)
     if cv2.waitKey(1) == ord("q"):
         break
