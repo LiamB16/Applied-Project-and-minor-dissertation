@@ -23,7 +23,7 @@ while (True):
     )
 # Draw rectangle around the faces
     for (x, y, w, h) in faces:
-       cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+       cv2.rectangle(img, (x, y), (x+w, y+h), (255, 255, 0), 5)
        
 # Display the output
     imS = cv2.resize(img, (540, 540))
