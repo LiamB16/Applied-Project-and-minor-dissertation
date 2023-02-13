@@ -14,9 +14,9 @@ clf = cv2.CascadeClassifier(str(cascade_path))
 
 camera = cv2.VideoCapture(0, cv2.CAP_DSHOW) #captureDevice = camera # VideoCapture(number of cameras). 0 is the defualt number
 
-while (True): #fixes issue of program crashing due to
+while (True): #runs camera on laptop
     ret, frame =  camera.read()
-    
+    #scales faces and shows image in color
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = clf.detectMultiScale(
     gray,
@@ -25,19 +25,22 @@ while (True): #fixes issue of program crashing due to
     minSize=(30, 30),
     flags=cv2.CASCADE_SCALE_IMAGE
     )
-    
+    #for every face captured, draw rectangle around face
     for(x, y, width, height) in faces:
+         #draws rectangle
         cv2.rectangle(frame, (x, y), (x+width, y+height), (255, 255, 0), 2) #draws rectangle around head
+        #displays text above square
         cv2.putText(frame, "name: " +name, (x, y-50), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
              0.75, (0, 255, 0), 2)
         cv2.putText(frame, "age: " + age, (x, y-22), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
              0.75, (0, 255, 0), 2)
         cv2.putText(frame, "occupation: " + occupation, (x, y), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
              0.75, (0, 255, 0), 2)
-        ID = "G00377746"
+        ID = "G00377746" 
         print(ID)
-        
+     #shows camera feed on laptop 
     cv2.imshow("FACES", frame)
+    #kills camera if 'q' is pressed
     if cv2.waitKey(1) == ord("q"):
         break
     
