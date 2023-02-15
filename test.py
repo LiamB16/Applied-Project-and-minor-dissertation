@@ -13,6 +13,11 @@ img_encoding2 = face_recognition.face_encodings(rgb_img)[0]
 
 #compares binary code of two images and sees if they are both the same
 results = face_recognition.compare_faces([img_encoding], img_encoding2)
-print("Results ", results)
+if results == [True]:
+  #SQL query of the 
+  print("found a match")
+else:
+  print("unknown")
+    
 
 cv2.imshow("img", img)
