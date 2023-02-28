@@ -32,7 +32,7 @@ now = datetime.now()
 current_date = now.strftime("%D-%M-%Y")
 
 # opens and creates file
-f = open(current_date +'.csv','w+',newline= '')
+f = open('current_date.csv','w+',newline= '')
 lnwriter = csv.writer(f)
 #runs video camera 
 while True:
@@ -58,8 +58,8 @@ while True:
                     print(students)
                     #records hour minutes and seconds person was seen
                     current_time = now.strftime("%H-%M-%S")
-                    #writes time to csv file
-                    lnwriter.writerrow([name,current_time])
+                    #writes time to csv fil
+                    lnwriter.writerrow([name, current_time])
         cv2.imshow("attendance system", frame)
         #kills camera
         if cv2.waitKey(1) == ord("q"):

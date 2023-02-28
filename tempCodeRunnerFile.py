@@ -1,3 +1,1 @@
-name = "Liam"
-age = "22"
-occupation = "student"
+pip install mysql.connector
