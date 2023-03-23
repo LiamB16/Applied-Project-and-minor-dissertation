@@ -12,18 +12,19 @@ CREATE TABLE `Persons` (
 `age` int,
 `occupation` char(30),
 `IsAdmin`  ENUM ('Y', 'N'),
+`Admin_password`varbinary(255),
 PRIMARY KEY (ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `Persons` VALUES 
-('G00377746', 'Liam', 'Bryant', 22, 'Student', 'Y'),
-('G00377747', 'Elon', 'Musk', 22, 'CEO', 'N'),
-('G00377748', 'Bill', 'Gates', 22, 'CEO', 'N'),
-('G00377749', 'Jeff', 'Besos', 22, 'CEO', 'N'),
-('G00377750', 'Warren', 'Buffet', 22, 'Investor', 'N'),
-('G00377751', 'Robert', 'Kyoshi', 22, 'investor', 'N'),
-('G00377752', 'Ryan', 'Reynolds', 22, 'actor', 'N'),
-('G00377753', 'Hugh', 'Jackmen', 22, 'actor', 'N');
+('G00377746', 'Liam', 'Bryant', 22, 'Student', 'Y', AES_ENCRYPT('password', 'KEY')),
+('G00377747', 'Elon', 'Musk', 22, 'CEO', 'N', ''),
+('G00377748', 'Bill', 'Gates', 22, 'CEO', 'N', ''),
+('G00377749', 'Jeff', 'Besos', 22, 'CEO', 'N', ''),
+('G00377750', 'Warren', 'Buffet', 22, 'Investor', 'N', ''),
+('G00377751', 'Robert', 'Kyoshi', 22, 'investor', 'N', ''),
+('G00377752', 'Ryan', 'Reynolds', 22, 'actor', 'N', ''),
+('G00377753', 'Hugh', 'Jackmen', 22, 'actor', 'N', '');
 
 DROP TABLE IF EXISTS `Education`;
 

@@ -66,7 +66,7 @@ def Add():
     
 def AddPerson():
     try:
-        c.execute("Insert into persons values('Liam', 22, 'student', 'c:/users/Liam', 'Y');")
+        c.execute("Insert into persons values('G00377746', 'Liam', 'Bryant', 22, 'Student', 'Y');")
     except Exception as e:
         print(e)
         c.rollback()

@@ -12,7 +12,7 @@ clf = cv2.CascadeClassifier(str(cascade_path))
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # Read the input image
 while (True):
-    img = cv2.imread('C:/Users/Liam/Desktop/Main project/images/Liam.jpg')
+    img = cv2.imread('C:/Users/Liam/Desktop/Main project/images/G00377746.jpg')
 # Convert into grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 # Detect faces
