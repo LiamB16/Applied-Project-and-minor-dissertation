@@ -14,6 +14,8 @@ db = mysql.connector.connect(
 
 c = db.cursor()
 
+Access = False
+
 root = tk.Tk()
 
 # create a function to close the window
@@ -86,14 +88,24 @@ class loginForm:
         user = c.fetchone()
         print(user)
         if user is not None:
-           
+           Access = True
            messagebox.showwarning('correct', 'Valid Username & Password')
+           try:
+               select_query = 'insert into currentlyLogin values (%s, "Logged in", curdate(), curtime());'
+               vals = [username]
+               c.execute(select_query, vals)
+               db.commit(); #commits changes to database
+           except Exception as e:
+               print(e)
+               c.rollback()
+               c.close()
         else:
             messagebox.showwarning('Error', 'Enter a Valid Username & Password')
+        return Access
 
 
 
-def main():
+def main(Access):
     login_window = loginForm(root)
     root.mainloop()
 

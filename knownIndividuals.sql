@@ -78,5 +78,13 @@ CREATE TABLE `Bank` (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `CurrentlyLogin`;
+
+CREATE TABLE `CurrentlyLogin` (
+`ID` char(10) NOT NULL,
+`Activity` char(30),
+`Date` Date,
+`Time` TIME
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 UNLOCK TABLES;
