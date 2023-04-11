@@ -9,4 +9,4 @@ Requirements:
 These can be obtain using "pip install (import name)"
 
 # NOTE 
-must use python 3.7 
+must use python 3.7 due to dlib compatability.
