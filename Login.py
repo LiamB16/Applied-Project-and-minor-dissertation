@@ -1,6 +1,8 @@
 #login form
 import tkinter as tk
 from tkinter import messagebox
+from PIL import ImageTk, Image
+from tkinter import *
 
 import mysql.connector
 
@@ -14,8 +16,6 @@ db = mysql.connector.connect(
 
 c = db.cursor()
 
-Access = False
-
 root = tk.Tk()
 
 # create a function to close the window
@@ -28,6 +28,8 @@ h = 260
 
 class loginForm:
     def __init__(self,master):
+        
+        
         self.master = master
         # start center window
         ws = self.master.winfo_screenwidth()
@@ -88,7 +90,6 @@ class loginForm:
         user = c.fetchone()
         print(user)
         if user is not None:
-           Access = True
            messagebox.showwarning('correct', 'Valid Username & Password')
            try:
                select_query = 'insert into currentlyLogin values (%s, "Logged in", curdate(), curtime());'
@@ -101,11 +102,11 @@ class loginForm:
                c.close()
         else:
             messagebox.showwarning('Error', 'Enter a Valid Username & Password')
-        return Access
 
 
 
-def main(Access):
+
+def main():
     login_window = loginForm(root)
     root.mainloop()
 

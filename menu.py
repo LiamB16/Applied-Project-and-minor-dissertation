@@ -5,8 +5,8 @@ import cv2  # pip install opencv-python
 from tkinter import messagebox
 import pathlib
 import face_recognition
-import Login as Log # login class created for admin login
-import User as U # User class created for pulling relevant data from 
+#import Login as Log # login class created for admin login
+#import User as U # User class created for pulling relevant data from 
 
 root = Tk()
 root.title("profiler")
