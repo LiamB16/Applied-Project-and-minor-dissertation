@@ -5,7 +5,7 @@ import cv2  # pip install opencv-python
 from tkinter import messagebox
 import pathlib
 import face_recognition
-
+from PIL import ImageTk, Image
 
 root = Tk()
 root.title("profiler")
@@ -39,43 +39,43 @@ def Education():
 def Health():
     print("ok")
     
-def main(): 
+ 
 # create a menu item
-    file_menu = Menu(my_menu)
-    my_menu.add_cascade(label="options", menu=file_menu)
-    file_menu.add_command(label="Customise Menu", command=Assets)
-    file_menu.add_command(label="Switch admins", command=Assets)
+file_menu = Menu(my_menu)
+my_menu.add_cascade(label="options", menu=file_menu)
+file_menu.add_command(label="Customise Menu", command=Assets)
+file_menu.add_command(label="Switch admins", command=Assets)
 
 # create edit item menu
-    edit_menu = Menu(my_menu)
-    my_menu.add_cascade(label="Users", menu=edit_menu)
-    edit_menu.add_command(label="Assets", command=Assets)
-    edit_menu.add_command(label="Bank", command=Bank)
-    edit_menu.add_command(label="criminal record", command=CR)
-    edit_menu.add_command(label="education", command=Education)
-    edit_menu.add_command(label="Health Record", command=Health)
+edit_menu = Menu(my_menu)
+my_menu.add_cascade(label="Users", menu=edit_menu)
+edit_menu.add_command(label="Assets", command=Assets)
+edit_menu.add_command(label="Bank", command=Bank)
+edit_menu.add_command(label="criminal record", command=CR)
+edit_menu.add_command(label="education", command=Education)
+edit_menu.add_command(label="Health Record", command=Health)
 
-    #photo = TK.PhotoImage(file = "C:/Users/Liam/Desktop/Main project/images/G00377746.jpg")
-    select_query = 'select ID from currentlylogin;'
-    c.execute(select_query)
-    ID = c.fetchone()
-    #ShowID = TK.Label(root, tuple='ID: ' + ID, bg='#fff',
+photo = TK.PhotoImage(Image.open("C:/Users/Liam/Desktop/Main project/images/G00377746.jpg"))
+select_query = 'select ID from currentid;'
+c.execute(select_query)
+#ID = c.fetchone()
+#print(ID)
+#ShowID = TK.Label(root, tuple='ID: ' + ID, bg='#fff',
                                      # font=('Verdana',16))
     
-    #ShowID.pack()
+#ShowID.pack()
 
 
-    b = Button(root, text="Monitor Mode", command=Assets)
-    b.pack()
+b = Button(root, text="Assets", command=Assets)
+b.pack()
 
-    b2 = Button(root, text="Profile Mode", command=Bank)
-    b2.pack()
+b2 = Button(root, text="Profile Mode", command=Bank)
+b2.pack()
 
-    b3 = Button(root, text="Take attendance", command=CR)
-    b3.pack()
+b3 = Button(root, text="Education", command=Education)
+b3.pack()
 
-    b4 = Button(root, text="Logout", command=CR)
-    b4.pack()
+b4 = Button(root, text="Logout", command=CR)
+b4.pack()
 
-if __name__ == '__main__':
-    main()
+root.mainloop()

@@ -1,5 +1,5 @@
 import mysql.connector  # pip install mysql.connector
-import tkinter as TK
+import tkinter as tk
 from tkinter import *
 import cv2  # pip install opencv-python
 from tkinter import messagebox
@@ -8,10 +8,9 @@ import face_recognition
 #import Login as Log # login class created for admin login
 #import User as U # User class created for pulling relevant data from 
 
-root = Tk()
+root = tk.Tk()
 root.title("profiler")
 root.iconbitmap("C:/Users/Liam/Desktop/Main project/images/favicon.ico")
-# root.iconbitmap("c:/gui/codemy.ico")
 root.geometry("400x400")
 
 db = mysql.connector.connect(
@@ -26,45 +25,17 @@ c = db.cursor()
 my_menu = Menu(root)
 root.config(menu=my_menu)
 
-global entry1
-global entry2
 
 bkg= "#636e72"
 
-frame = TK.Frame(root, bg=bkg)
+frame = tk.Frame(root, bg=bkg)
 
 # click command
 def our_command():
     pass
 
 def Add():
-    label_name = TK.Label(frame, text="Name: ")
-    entry_name = TK.Entry(frame)
-    
-    label_age = TK.Label(frame, text="Age: ")
-    entry_age = TK.Entry(frame)
-    
-    label_occupation = TK.Label(frame, text="Occupation: ")
-    entry_occupation = TK.Entry(frame)
-    
-    label_image = TK.Label(frame, text="Image Link: ")
-    entry_image = TK.Entry(frame)
-    
-    Button(root,text="Add",command=AddPerson,height=3,width=13, bd=6).place(x=100, y=120)
-    
-    label_name.grid(row=0, column=0)
-    entry_name.grid(row=0, column=1)
-    
-    label_age.grid(row=1, column=0)
-    entry_age.grid(row=1, column=1)
-    
-    label_occupation.grid(row=2, column=0)
-    entry_occupation.grid(row=2, column=1)
-    
-    label_image.grid(row=3, column=0)
-    entry_image.grid(row=3, column=1)
-    
-    frame.pack()
+    print("add")
     
 def AddPerson():
     try:
@@ -151,40 +122,35 @@ def Monitor():
     camera.release()
     cv2.destroyAllWindows
         
-def main(): 
+ 
 # create a menu item
-    file_menu = Menu(my_menu)
-    my_menu.add_cascade(label="options", menu=file_menu)
-    file_menu.add_command(label="Customise Menu", command=our_command)
-    file_menu.add_command(label="Switch admins", command=our_command)
+file_menu = Menu(my_menu)
+my_menu.add_cascade(label="options", menu=file_menu)
+file_menu.add_command(label="Customise Menu", command=our_command)
+file_menu.add_command(label="Switch admins", command=our_command)
 
 # create edit item menu
-    edit_menu = Menu(my_menu)
-    my_menu.add_cascade(label="Users", menu=edit_menu)
-    edit_menu.add_command(label="add known individual", command=Add)
-    edit_menu.add_command(label="remove individual", command=DeletePerson)
-    edit_menu.add_command(label="view database", command=DeletePerson)
-    edit_menu.add_command(label="set/remove admin", command=DeletePerson)
+edit_menu = Menu(my_menu)
+my_menu.add_cascade(label="Users", menu=edit_menu)
+edit_menu.add_command(label="add known individual", command=Add)
+edit_menu.add_command(label="view database", command=DeletePerson)
+edit_menu.add_command(label="set/remove admin", command=DeletePerson)
 
-    photo = TK.PhotoImage(file = "C:/Users/Liam/Pictures/Security.png")
-    label2 = TK.Label(root,  image = photo,  width = 300, height = 250,
-                 bg = "white", fg = "black")
-    label2.pack()
+photo = tk.PhotoImage(file = "C:/Users/Liam/Pictures/Security.png")
+label2 = tk.Label(root,  image = photo,  width = 300, height = 250,
+                bg = "white", fg = "black")
+label2.pack()
 
+b = Button(root, text="Monitor Mode", command=Monitor)
+b.pack()
 
+b2 = Button(root, text="Profile Mode", command=Camera)
+b2.pack()
 
+b3 = Button(root, text="Take attendance", command=Camera)
+b3.pack()
 
+b4 = Button(root, text="Logout", command=root.quit)
+b4.pack()
 
-    b = Button(root, text="Monitor Mode", command=Monitor)
-    b.pack()
-
-    b2 = Button(root, text="Profile Mode", command=Camera)
-    b2.pack()
-
-    b3 = Button(root, text="Take attendance", command=Camera)
-    b3.pack()
-
-    b4 = Button(root, text="Logout", command=root.quit)
-    b4.pack()
-
-    root.mainloop()
+root.mainloop()

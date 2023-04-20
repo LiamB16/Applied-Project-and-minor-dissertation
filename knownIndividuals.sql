@@ -38,7 +38,8 @@ CREATE TABLE `Education` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `Education` VALUES 
-('G00377746', 'StJosephs', 'Secondary school', 'diploma', 2019);
+('G00377746', 'StJosephs', 'Secondary school', 'diploma', 2019),
+('G00377746', 'ATU', 'Level 7', 'bachelors', 2022);
 
 DROP TABLE IF EXISTS `Criminal_Record`;
 
@@ -47,6 +48,9 @@ CREATE TABLE `Criminal_Record` (
 `Crime` char(30) 
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `Criminal_Record` VALUES 
+('G00377747', 'tax-evasion');
 
 DROP TABLE IF EXISTS `medical_condition`;
 
@@ -68,7 +72,8 @@ CREATE TABLE `Assets` (
 `owns_privateJet` ENUM ('Y', 'N')
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+INSERT INTO `Assets` VALUES 
+('G00377746', 'Bugatti', '21-CE-6969', 'N', 'NONE', 'N', 'Y');
 DROP TABLE IF EXISTS `Bank`;
 
 CREATE TABLE `Bank` (
@@ -77,14 +82,22 @@ CREATE TABLE `Bank` (
 `current_balance` decimal(6, 2) 
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `Bank` VALUES 
+('G00377746', '333666999', 1000.00);
+DROP TABLE IF EXISTS `DailyActivity`;
 
-DROP TABLE IF EXISTS `CurrentlyLogin`;
-
-CREATE TABLE `CurrentlyLogin` (
+CREATE TABLE `Daily_Activity` (
 `ID` char(10) NOT NULL,
 `Activity` char(30),
 `Date` Date,
 `Time` TIME
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `CurrentID`;
+
+CREATE TABLE `CurrentID` (
+`ID` char(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 UNLOCK TABLES;

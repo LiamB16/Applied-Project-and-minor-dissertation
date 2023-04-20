@@ -8,7 +8,7 @@ from datetime import datetime
 
 video_capture = cv2.VideoCapture(0)
 #reads in image and converts it into bimary data
-img = cv2.imread("C:/Users/Liam/Desktop/Main project/images/Liam.jpg")
+img = cv2.imread("C:/Users/Liam/Desktop/Main project/images/G00377746.jpg")
 rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 img_encoding = face_recognition.face_encodings(rgb_img)[0]
 
@@ -32,7 +32,7 @@ now = datetime.now()
 current_date = now.strftime("%D-%M-%Y")
 
 # opens and creates file
-f = open('current_date.csv','w+',newline= '')
+f = open("C:/Users/Liam/Desktop/Main project/current_date.csv",'w+',newline= '')
 lnwriter = csv.writer(f)
 #runs video camera 
 while True:
