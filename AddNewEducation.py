@@ -1,5 +1,5 @@
 #login form
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import tkinter as tk
 from PIL import ImageTk, Image
 
@@ -18,7 +18,7 @@ c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
 
-bkg = "#636e72"
+bkg = "white"
 
 # create a function to close the window
 def close_window():
@@ -26,55 +26,63 @@ def close_window():
 
 frame = tk.Frame(root)
 
-label_ID = tk.Label(frame, text="ID: ", font=('verdana',12), bg=bkg)
-entry_ID = tk.Entry(frame, font=('verdana',12))
+label_School = tk.Label(frame, text="School Name: ", font=('verdana',12), bg=bkg)
+entry_School = tk.Entry(frame, font=('verdana',12))
 
-label_firstname = tk.Label(frame, text="First Name: ", font=('verdana',12), bg=bkg)
-entry_firstname = tk.Entry(frame, font=('verdana',12))
+label_Level = tk.Label(frame, text="Level: ", font=('verdana',12), bg=bkg)
+combo = ttk.Combobox(values=["secondary school", "university", "community college", "Medical School"])
 
-label_Lastname = tk.Label(frame, text="Last Name: ", font=('verdana',12), bg=bkg)
-entry_Lastname = tk.Entry(frame, font=('verdana',12))
+label_Award = tk.Label(frame, text="Award: ", font=('verdana',12), bg=bkg)
+combo2 = ttk.Combobox(values=["N/A","diploma", "Level 7", "Level 8", "Doctorite"])
 
-label_age = tk.Label(frame, text="age: ", font=('verdana',12), bg=bkg)
-entry_age = tk.Entry(frame, font=('verdana',12))
+label_Grad = tk.Label(frame, text="Graduation Year: ", font=('verdana',12), bg=bkg)
+combo3 = ttk.Combobox(values=[ "N/A", "2023","2022","2021",
+"2020","2019","2018","2017","2016","2015","2014","2013","2012","2011", 
+"2010","2009","2008","2007","2006","2005","2004","2003","2002","2001",
+"2000","1999","1998","1997","1996","1995","1994","1993","1992","1991",
+"1990","1989","1988","1987","1986","1985","1984","1983","1982","1981",
+"1980","1979","1978","1977","1976","1975","1974","1973","1972","1971",
+"1970"])
 
-label_occupation = tk.Label(frame, text="occupation: ", font=('verdana',12), bg=bkg)
-entry_occupation = tk.Entry(frame, font=('verdana',12))
+
 
 def insertData():
-    ID = entry_ID.get()
-    firstname = entry_firstname.get()
-    Lastname = entry_Lastname.get()
-    age = entry_age.get()
-    occupation = entry_occupation.get()
+    ID = "G00377746"
+    level = combo.get()
+    award = combo2.get()
+    grad = combo3.get()
     
-    insert_query = "INSERT INTO persons(`ID`, `name`,`sur-name`, `age`, `occupation`) values (%s,%s,%s,%s,%s)"
-    vals = (ID, firstname, Lastname, age, occupation)
+    
+    insert_query = "INSERT INTO `Education` VALUES values (%s,%s,%s,%s,%s)"
+    vals = (ID, level, award, grad)
     c.execute(insert_query, vals)
     db.commit()
+    
+    select_query = 'insert into daily_activity values ("G00377746", "Added new Education", curdate(), curtime());'
+    c.execute(select_query)
+    db.commit(); #commits changes to database
+    messagebox.showwarning("Success", "New data assigned")
+    close_window()
 
 button_insert = tk.Button(root, text="insert", font=('verdana',14), bg='orange', command=insertData)
-btnCancel = tk.Button(root, text='Cancel', bg='orange', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
+btnCancel = tk.Button(root, text='Cancel', bg='red', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
 
 #Sets positins of buttons and text
-label_ID.grid(row=0, column=0)
-entry_ID.grid(row=0, column=1, pady=10, padx=10)
+label_School.grid(row=2, column=0)
+entry_School.grid(row=2, column=1, pady=10, padx=10)
 
-label_firstname.grid(row=1, column=0)
-entry_firstname.grid(row=1, column=1, pady=10, padx=10)
+label_Level.grid(row=3, column=0)
+combo.grid(row=3, column=1)
 
-label_Lastname.grid(row=2, column=0)
-entry_Lastname.grid(row=2, column=1, pady=10, padx=10)
+label_Award.grid(row=4, column=0)
+combo2.grid(row=1, column=1, pady=10, padx=10)
 
-label_age.grid(row=3, column=0)
-entry_age.grid(row=3, column=1, pady=10, padx=10)
+label_Grad.grid(row=5, column=0)
+combo3.grid(row=5, column=1, pady=10, padx=10)
 
-label_occupation.grid(row=4, column=0)
-entry_occupation.grid(row=4, column=1, pady=10, padx=10)
+button_insert.grid(row=6, column=0, columnspan=2)
+btnCancel.grid(row=6, column=1, columnspan=2)
 
-button_insert.grid(row=4, column=0, columnspan=2)
-btnCancel.grid(row=4, column=1, columnspan=2)
-
-frame.grid(row=0, column=0)
+frame.grid(row=1, column=0)
 
 root.mainloop()

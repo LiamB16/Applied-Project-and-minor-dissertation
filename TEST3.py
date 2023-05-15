@@ -2,11 +2,8 @@ import numpy as np
 import face_recognition
 from PIL import Image, ImageDraw, ImageFont
 
-
-
-face1 = face_recognition.load_image_file("C:/Users/Liam\Desktop/Main project/images/G00377746.jpg")
+face1 = face_recognition.load_image_file("C:/Users/Liam\Desktop/Main project/images/G00377746Test.jpg")
 face1_encoding = face_recognition.face_encodings(face1)[0]
-
 
 face_encodings = [face1_encoding]
 face_names = ['G00377746', 'G00377747', 'G00377748']

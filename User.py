@@ -19,7 +19,7 @@ db = mysql.connector.connect(
 c = db.cursor()
         
 def display():
-    c.execute("select * from persons;")
+    c.execute("select ID, name, age, occupation, IsAdmin from persons;")
 
     i=0 
     for student in c: 
@@ -33,10 +33,14 @@ def display():
             e.grid(row=i, column=8) 
          # show the info button     
             e = tk.Button(my_w,width=5,text='info',fg='blue',relief='ridge',
-            anchor="w",command=lambda k=student[0]:del_data(k))  
+            anchor="w",command=lambda k=student[0]:view_data(k))  
             e.grid(row=i, column=7) 
+        # show the info button     
+            e = tk.Button(my_w,width=15,text='remove as admin',fg='Black',relief='ridge',
+            anchor="w",command=lambda k=student[0]:Remove_admin(k))  
+            e.grid(row=i, column=9) 
         i=i+1
-    display()
+display()
 
 def del_data(s_id): # delete record 
     try:
@@ -56,7 +60,47 @@ def del_data(s_id): # delete record
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         print(error)
-
+        
+def view_data(s_id): # delete record 
+    try:
+        my_var=msg.askyesnocancel("view Record",
+           "are you sure you want to view data relating to " + s_id,icon='warning')
+        print(my_var)
+        if my_var:
+            c.execute("DELETE FROM currentid;")
+            db.commit(); #commits changes to database
+            
+            query="insert into currentid values (%s); "
+            my_data=[s_id]
+            c.execute(query,my_data)
+            db.commit(); #commits changes to database
+            print("New person added  ")
+            
+            for row in my_w.grid_slaves():# remove widgets
+                row.grid_forget()
+            display() # refresh the list 
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        print(error)
+        
+def Remove_admin(s_id): # delete record 
+    try:
+        my_var=msg.askyesnocancel("view Record",
+           "are you sure you want to remove " + s_id + " as admin",icon='warning')
+        print(my_var)
+        if my_var: 
+            query="update persons SET isadmin = 'N', Admin_password = AES_ENCRYPT('', 'KEY') where ID = %s; "
+            my_data=[s_id]
+            c.execute(query,my_data)
+            db.commit(); #commits changes to database
+            print("Admin removed")
+            
+            for row in my_w.grid_slaves():# remove widgets
+                row.grid_forget()
+            display() # refresh the list 
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        print(error)
 my_w.mainloop()
     
     

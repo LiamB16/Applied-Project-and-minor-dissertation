@@ -41,11 +41,14 @@ class AssignAdmin_Form:
             self.windowTitle = tk.Label(self.frame, text='Assign New Admin', bg='#fff',
                                         fg='blue', font=('Tahoma',20), pady=30)
             
-            self.usernameLabel = tk.Label(self.frame, text='ID: ', bg='#fff',
+            self.oldLabel = tk.Label(self.frame, text='Old password: ', bg='#fff',
                                         font=('Verdana',16))
-            self.usernameTextbox = tk.Entry(self.frame, font=('Verdana',12), width=25,
+            self.oldTextbox = tk.Entry(self.frame, font=('Verdana',12), width=25,
                                             borderwidth='2', relief='ridge')
-            
+            self.newLabel = tk.Label(self.frame, text='New password: ', bg='#fff',
+                                        font=('Verdana',16))
+            self.newTextbox = tk.Entry(self.frame, font=('Verdana',12), width=25,
+                                            borderwidth='2', relief='ridge')
             
             self.btnLogin = tk.Button(self.btnsFrame, text='Assign', bg='green',
                                     font=('Verdana',12), fg='#fff', padx=25,
@@ -58,44 +61,36 @@ class AssignAdmin_Form:
             # start place widgets
             self.frame.pack(fill='both')
             self.windowTitle.grid(row=0, column=0, columnspan=2)
-            self.usernameLabel.grid(row=1, column=0)
-            self.usernameTextbox.grid(row=1, column=1)
-            self.btnsFrame.grid(row=3, column=0, columnspan=2, pady=10)
+            self.oldLabel.grid(row=1, column=0)
+            self.oldTextbox.grid(row=1, column=1)
+            self.newLabel.grid(row=2, column=0)
+            self.newTextbox.grid(row=2, column=1)
+            self.btnsFrame.grid(row=4, column=0, columnspan=2, pady=10)
             self.btnLogin.grid(row=0, column=0, padx=(0,35))
             self.btnCancel.grid(row=0, column=1)
             # end place widgets
 
 
     def Assign(self):
-        id = self.usernameTextbox.get()
-        select_query = 'SELECT * FROM criminal_record WHERE ID = %s; '
+        id = self.oldTextbox.get()
+        select_query = 'SELECT * FROM persons WHERE ID = "G00377746" and Admin_password = AES_ENCRYPT(%s, "KEY"); '
         val = [id]
         c.execute(select_query, val)
                 
-        NewAdmin = c.fetchone()
-        print(NewAdmin)
-        if NewAdmin is not None:
-            messagebox.showwarning("can't assign admin", "they have a criminal record")
+        oldpass = c.fetchone()
+        
+        if oldpass is None:
+            messagebox.showwarning("can't change password", "Old password is incorrect")
        
         else:
-            query= "select * from persons where ID = %s and IsAdmin = 'Y';"
-            my_data=[id]
+            id2 = self.newTextbox.get()
+            query= "update persons SET Admin_password = AES_ENCRYPT('%s', 'KEY') where ID = 'G00377746';"
+            my_data=(id2)
             c.execute(query,my_data)
-            
-            IsAlreadyAdmin = c.fetchone()
-            if IsAlreadyAdmin is not None:
-                messagebox.showwarning("can't assign admin", "Already Admin")
-            else:
-                query= "update persons SET isadmin = 'Y', Admin_password = AES_ENCRYPT('password', 'KEY') where ID = %s;"
-                my_data=[id]
-                c.execute(query,my_data)
-                db.commit(); #commits changes to database
-                select_query = 'insert into daily_activity values ("G00377746", "Assigned new admin", curdate(), curtime());'
-            
-                c.execute(select_query)
-                db.commit(); #commits changes to database
-                messagebox.showwarning("Success", "New data assigned")
-                close_window()
+            print(my_data)
+            db.commit(); #commits changes to database
+            messagebox.showwarning("Success", "New password assigned")
+            close_window()
 def main():
     AssignAdmin_window = AssignAdmin_Form(root)
     root.mainloop()

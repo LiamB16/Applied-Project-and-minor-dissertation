@@ -64,16 +64,13 @@ DROP TABLE IF EXISTS `Assets`;
 
 CREATE TABLE `Assets` (
 `ID` char(10) NOT NULL,
-`Car` char(30),
-`Car_Reg` char(30),
-`Self-employeed` ENUM ('Y', 'N'),
-`company_name` char(30),
-`owns_yacht` ENUM ('Y', 'N'),
-`owns_privateJet` ENUM ('Y', 'N')
-
+`Asset` char(30),
+`valuedAt` decimal(8, 2),
+`AssetID` char(15)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO `Assets` VALUES 
-('G00377746', 'Bugatti', '21-CE-6969', 'N', 'NONE', 'N', 'Y');
+('G00377746', 'Bugatti', 100000.00, '20-CE-6969');
 DROP TABLE IF EXISTS `Bank`;
 
 CREATE TABLE `Bank` (

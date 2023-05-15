@@ -1,6 +1,7 @@
 import cv2 #pip install opencv-python
 import face_recognition #pip install cspan, install dlib, install face_recognition
 import mysql.connector
+import os
 
 db = mysql.connector.connect(
     host="localhost",
@@ -15,6 +16,7 @@ c = db.cursor()
 img = cv2.imread("C:/Users/Liam/Desktop/Main project/images/G00377746.jpg")
 rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 img_encoding = face_recognition.face_encodings(rgb_img)[0]
+print(img_encoding)
 
 #finds image in file and converts it to binary code
 img2 = cv2.imread("C:/Users/Liam/Desktop/Main project/images/G00377746Test.jpg")
@@ -25,7 +27,6 @@ img_encoding2 = face_recognition.face_encodings(rgb_img2)[0]
 results = face_recognition.compare_faces([img_encoding], img_encoding2)
 print(results)
 if results == [True]:
-  
   print("found a match")
   #removes the previously found person
   c.execute("delete from currentid;")

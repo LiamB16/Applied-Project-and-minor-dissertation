@@ -18,7 +18,7 @@ c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
 
-bkg = "#636e72"
+bkg = "white"
 
 # create a function to close the window
 def close_window():
@@ -53,11 +53,15 @@ def insertData():
     vals = (ID, firstname, Lastname, age, occupation, admin, password)
     c.execute(insert_query, vals)
     db.commit()
+    select_query = 'insert into daily_activity values ("G00377746", "Added new User", curdate(), curtime());'
+    c.execute(select_query)
+    db.commit(); #commits changes to database
+    messagebox.showwarning("Success", "New data assigned")
     messagebox.showwarning('New User Added')
     close_window()
 
 button_insert = tk.Button(root, text="insert", font=('verdana',14), bg='orange', command=insertData)
-btnCancel = tk.Button(root, text='Cancel', bg='orange', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
+btnCancel = tk.Button(root, text='Cancel', bg='red', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
 
 #Sets positins of buttons and text
 label_ID.grid(row=0, column=0)

@@ -10,7 +10,7 @@ import face_recognition
 
 root = tk.Tk()
 root.title("profiler")
-root.iconbitmap("C:/Users/Liam/Desktop/Main project/images/favicon.ico")
+root.iconbitmap("C:/Users/Liam/Desktop/Main project/UI_images/favicon.ico")
 root.geometry("400x400")
 
 db = mysql.connector.connect(
@@ -32,19 +32,19 @@ frame = tk.Frame(root, bg=bkg)
 
 # click command
 def our_command():
-    pass
-
-def Add():
-    print("add")
     
-def AddPerson():
-    try:
-        c.execute("Insert into persons values('G00377746', 'Liam', 'Bryant', 22, 'Student', 'Y');")
-    except Exception as e:
-        print(e)
-        c.rollback()
-        c.close()
-
+    
+    pass
+def Set_admin():
+    import AssignAdmin as AA
+    AA.main()
+def Add():
+    import AddNewUser
+def Users():
+    import User 
+    
+    
+    
 
 def DeletePerson():
     try:
@@ -56,84 +56,18 @@ def DeletePerson():
 
 
 def Camera():
-    #finds image in file and converts it to binary code
-    img = cv2.imread("C:/Users/Liam/Desktop/Main project/images/Liam.jpg")
-    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_encoding = face_recognition.face_encodings(rgb_img)[0]
-
-    #finds image in file and converts it to binary code
-    img2 = cv2.imread("C:/Users/Liam/Desktop/Main project/images/LiamTest.jpg")
-    rgb_img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_encoding2 = face_recognition.face_encodings(rgb_img)[0]
-
-    #compares binary code of two images and sees if they are both the same
-    results = face_recognition.compare_faces([img_encoding], img_encoding2)
-    if results == [True]:
-       #SQL query of the 
-       print("found a match")
-    else:
-       print("unknown")
+    print("Profile")
     
-    #cv2.imshow("img", img)
             
 def Monitor():
-    ID = "" #variable used to ID individual 
-
-    #SQL query gets data using ID variable
-    name = "Liam Bryant"
-    age = "22"
-    occupation = "student"
-
-    cascade_path = pathlib.Path(cv2.__file__).parent.absolute() / "data/haarcascade_frontalface_default.xml"
-
-    clf = cv2.CascadeClassifier(str(cascade_path))
-
-    camera = cv2.VideoCapture(0, cv2.CAP_DSHOW) #captureDevice = camera # VideoCapture(number of cameras). 0 is the defualt number
-
-    while (True): #runs camera on laptop
-        ret, frame =  camera.read()
-        #scales faces and shows image in color
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = clf.detectMultiScale(
-        gray,
-        scaleFactor=1.1,
-        minNeighbors=5,
-        minSize=(30, 30),
-        flags=cv2.CASCADE_SCALE_IMAGE
-        )
-        #for every face captured, draw rectangle around face
-        for(x, y, width, height) in faces:
-            #draws rectangle
-            cv2.rectangle(frame, (x, y), (x+width, y+height), (255, 255, 0), 2) #draws rectangle around head
-            #displays text above square
-            cv2.putText(frame, "name: " +name, (x, y-50), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
-             0.75, (0, 255, 0), 2)
-            cv2.putText(frame, "age: " + age, (x, y-22), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
-             0.75, (0, 255, 0), 2)
-            cv2.putText(frame, "occupation: " + occupation, (x, y), cv2.FONT_HERSHEY_SIMPLEX, #adds text around rectangle
-             0.75, (0, 255, 0), 2)
-            ID = "G00377746" 
-            print(ID)
-        #shows camera feed on laptop 
-        cv2.imshow("FACES", frame)
-        #kills camera if 'q' is pressed
-        if cv2.waitKey(1) == ord("q"):
-           break
-    camera.release()
-    cv2.destroyAllWindows
+    print("monitor")
         
  
-# create a menu item
-file_menu = Menu(my_menu)
-my_menu.add_cascade(label="options", menu=file_menu)
-file_menu.add_command(label="Customise Menu", command=our_command)
-file_menu.add_command(label="Switch admins", command=our_command)
 
-# create edit item menu
 edit_menu = Menu(my_menu)
 my_menu.add_cascade(label="Users", menu=edit_menu)
-edit_menu.add_command(label="add known individual", command=Add)
-edit_menu.add_command(label="view database", command=DeletePerson)
+edit_menu.add_command(label="add new person", command=Add)
+edit_menu.add_command(label="view database", command=Users)
 edit_menu.add_command(label="set/remove admin", command=DeletePerson)
 
 photo = tk.PhotoImage(file = "C:/Users/Liam/Pictures/Security.png")
@@ -141,7 +75,9 @@ label2 = tk.Label(root,  image = photo,  width = 300, height = 250,
                 bg = "white", fg = "black")
 label2.pack()
 
+
 b = Button(root, text="Monitor Mode", command=Monitor)
+b.place(x=25, y=100)
 b.pack()
 
 b2 = Button(root, text="Profile Mode", command=Camera)

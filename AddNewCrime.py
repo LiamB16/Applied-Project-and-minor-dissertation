@@ -18,63 +18,63 @@ c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
 
-bkg = "#636e72"
+
+bkg = "white"
+bkimg = tk.PhotoImage(file = "C:/Users/Liam/Pictures/GardaSiochanaLogo.png")
+label2 = tk.Label(root,  image = bkimg, 
+                bg = "white", fg = "black")
+
 
 # create a function to close the window
 def close_window():
     root.destroy()
 
 frame = tk.Frame(root)
+frame.config(width = 2000, height = 2000)
 
-label_ID = tk.Label(frame, text="ID: ", font=('verdana',12), bg=bkg)
-entry_ID = tk.Entry(frame, font=('verdana',12))
+label_Crime = tk.Label(frame, text="Crime: ", font=('verdana',12), bg=bkg)
+entry_Crime = tk.Entry(frame, font=('verdana',12))
 
-label_firstname = tk.Label(frame, text="crime: ", font=('verdana',12), bg=bkg)
-entry_firstname = tk.Entry(frame, font=('verdana',12))
 
-label_Lastname = tk.Label(frame, text="Last Name: ", font=('verdana',12), bg=bkg)
-entry_Lastname = tk.Entry(frame, font=('verdana',12))
-
-label_age = tk.Label(frame, text="age: ", font=('verdana',12), bg=bkg)
-entry_age = tk.Entry(frame, font=('verdana',12))
-
-label_occupation = tk.Label(frame, text="occupation: ", font=('verdana',12), bg=bkg)
-entry_occupation = tk.Entry(frame, font=('verdana',12))
 
 def insertData():
-    ID = entry_ID.get()
-    firstname = entry_firstname.get()
-    Lastname = entry_Lastname.get()
-    age = entry_age.get()
-    occupation = entry_occupation.get()
-    
-    insert_query = "INSERT INTO persons(`ID`, `name`,`sur-name`, `age`, `occupation`) values (%s,%s,%s,%s,%s)"
-    vals = (ID, firstname, Lastname, age, occupation)
-    c.execute(insert_query, vals)
-    db.commit()
+    id = "G0037748"
+    select_query = 'SELECT * FROM persons WHERE ID = "G00377760" AND occupation = "garda"; '
+    c.execute(select_query, id)            
+    guard = c.fetchone()
+    print(guard)
+    if guard is None:
+        messagebox.showwarning("can't assign ", "Admin must be a member of garda sicohana to assign criminal data")
+    else:
+        try:
+            crime = entry_Crime.get()
+            insert_query = "INSERT INTO `Criminal_Record` VALUES (%s,%s);"
+            vals = (id, crime)
+            c.execute(insert_query, vals)
+            db.commit()
+            select_query = 'insert into daily_activity values ("G00377746", "Added new Crime", curdate(), curtime());'
+            c.execute(select_query)
+            db.commit(); #commits changes to database
+            messagebox.showwarning("Success", "New data assigned")
+            close_window()
+        except Exception as e:
+            print(e)
+            c.rollback()
+            c.close()
+            messagebox.showwarning("Invalid data, Try Agaim  ")
 
 button_insert = tk.Button(root, text="insert", font=('verdana',14), bg='orange', command=insertData)
-btnCancel = tk.Button(root, text='Cancel', bg='orange', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
+btnCancel = tk.Button(root, text='Cancel', bg='red', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
 
 #Sets positins of buttons and text
-label_ID.grid(row=0, column=0)
-entry_ID.grid(row=0, column=1, pady=10, padx=10)
+label2.grid(row=0, column=0)
+label_Crime.grid(row=2, column=0)
+entry_Crime.grid(row=2, column=1, pady=10, padx=10)
 
-label_firstname.grid(row=1, column=0)
-entry_firstname.grid(row=1, column=1, pady=10, padx=10)
+button_insert.grid(row=3, column=0, columnspan=2)
+btnCancel.grid(row=3, column=1, columnspan=2)
 
-label_Lastname.grid(row=2, column=0)
-entry_Lastname.grid(row=2, column=1, pady=10, padx=10)
+frame.grid(row=1, column=0)
 
-label_age.grid(row=3, column=0)
-entry_age.grid(row=3, column=1, pady=10, padx=10)
-
-label_occupation.grid(row=4, column=0)
-entry_occupation.grid(row=4, column=1, pady=10, padx=10)
-
-button_insert.grid(row=4, column=0, columnspan=2)
-btnCancel.grid(row=4, column=1, columnspan=2)
-
-frame.grid(row=0, column=0)
 
 root.mainloop()

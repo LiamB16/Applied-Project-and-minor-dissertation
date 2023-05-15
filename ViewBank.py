@@ -3,6 +3,8 @@ import tkinter  as tk
 from tkinter import * 
 from tkinter import messagebox as msg
 from sqlalchemy.exc import SQLAlchemyError
+
+
 my_w = tk.Tk()
 my_w.geometry("400x250")
 
@@ -15,7 +17,8 @@ db = mysql.connector.connect(
 )
 
 c = db.cursor()
-windowTitle = tk.Label(my_w, text='Education', bg='white',
+
+windowTitle = tk.Label(my_w, text='Banking information', bg='white',
                         fg='black', font=('Tahoma',20), pady=15)
 bkimg = tk.PhotoImage(file = "C:/Users/Liam/Pictures/BankOfIrelandLogo.png")
 label2 = tk.Label(my_w,  image = bkimg, width = 200, height = 200,
@@ -25,20 +28,17 @@ windowTitle.grid(row = 0, column = 20)
 label2.grid(row = 1, column = 20) 
         
 def display():
-    
-    c.execute("select School, Ed_level, award, year_of_graduation from Education where ID = 'G00377746';")
-
-    i=3
+    c.execute("select Bank_ID, current_balance from Bank where ID = 'G00377746';")
+    i=3 
     for student in c: 
         for j in range(len(student)):
-            e = Entry(my_w, width=20, fg='blue') 
+            e = Entry(my_w, width=10, fg='blue') 
             e.grid(row=i, column=j) 
             e.insert(END, student[j])
          # show the delete button     
             e = tk.Button(my_w,width=5,text='Del',fg='red',relief='ridge',
             anchor="w",command=lambda k=student[0]:del_data(k))  
             e.grid(row=i, column=8) 
-         
         i=i+1
 display()
 
@@ -48,16 +48,15 @@ def del_data(s_id): # delete record
            "Are you sure ? ",icon='warning')
         print(my_var)
         if my_var:
-            query="DELETE FROM Education WHERE School=%s"
+            query="DELETE FROM Bank WHERE Bank_ID=%s"
             my_data=[s_id]
             c.execute(query,my_data)
             db.commit(); #commits changes to database
             
-            select_query = 'insert into daily_activity values ("G00377746", "Deleted Education", curdate(), curtime());'
+            select_query = 'insert into daily_activity values ("G00377746", "Deleted Bank", curdate(), curtime());'
             c.execute(select_query)
             db.commit(); #commits changes to database
             msg.showwarning("Success", "Data Deleted")
-            print("Row Deleted  ")
             
             for row in my_w.grid_slaves():# remove widgets
                 row.grid_forget()
@@ -65,4 +64,5 @@ def del_data(s_id): # delete record
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         print(error)
+
 my_w.mainloop()
