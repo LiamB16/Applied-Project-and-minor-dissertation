@@ -29,7 +29,8 @@ Requirements:
 2. download the required libraries. These can be obtain using "pip install (import name)"
 3. adjust the file paths for image files in the code and username and password of SQL database. Since the repo was cloned, the file paths may be different on machines
 4. copy the knownindividuls.sql to MySQL. This can be done by open the path "C:\wamp64\bin\mysql\mysql5.7.36\bin" in the command line. Once you are in the bin folder, type the following command " mysql -p -u (username) KnownIndividuals < "C:\Users\Liam\Desktop\Main project\knownIndividuals.sql". You will be prompted for a password, but if you are using root, just hit enter.
-once it is all finish, run the "login.py" file in visual studio code.
+once it is all finish, 
+5. run the "login.py" file in visual studio code.
 # NOTE 
 must use python 3.7 due to dlib compatability.
 
