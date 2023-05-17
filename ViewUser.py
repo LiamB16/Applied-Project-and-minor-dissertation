@@ -9,8 +9,6 @@ from PIL import ImageTk, Image
 
 root = Tk()
 root.title("profiler")
-#root.iconbitmap("C:/Users/Liam/Desktop/Main project/images/favicon.ico")
-# root.iconbitmap("c:/gui/codemy.ico")
 root.geometry("400x400")
 
 db = mysql.connector.connect(
@@ -23,9 +21,13 @@ db = mysql.connector.connect(
 c = db.cursor()
 
 my_menu = Menu(root)
-root.config(menu=my_menu)
+root.config(menu=my_menu, bg="grey")
 
-bkg= "#636e72"
+f = open("currentID.txt", "r")
+id = f.read()
+print(id)
+
+bkg= "black"
 
 frame = TK.Frame(root, bg=bkg)
 
@@ -51,6 +53,8 @@ def addEducation():
     import AddNewEducation
 def addAssets():
     import AddNewAsset
+def close_window():
+    root.destroy()
 
 
 
@@ -62,20 +66,31 @@ edit_menu.add_command(label="Bank", command=addBank)
 edit_menu.add_command(label="criminal record", command=addCR)
 edit_menu.add_command(label="education", command=addEducation)
 edit_menu.add_command(label="Health Record", command=addHealth)
+Title = Label(root, text='Profiler: ' + id, bg='grey',
+                                    fg='black', font=('Tahoma',20), pady=15)
+Title.pack()
 
-b = Button(root, text="Assets", command=Assets)
+photo = Image.open("C:/Users/Liam/Desktop/Main project/images/"+ id+".jpg")
+
+resized = photo.resize((300, 300), Image.ANTIALIAS)
+new_pic = ImageTk.PhotoImage(resized)
+i = Label(root, image=new_pic)
+i.pack()
+
+b = Button(root, text="Assets", bg='yellow', command=Assets)
 b.pack()
 
-b2 = Button(root, text="Bank", command=Bank)
+b2 = Button(root, text="Bank", bg='yellow', command=Bank)
 b2.pack()
 
-b3 = Button(root, text="Education", command=Education)
+b3 = Button(root, text="Education", bg='yellow', command=Education)
 b3.pack()
 
-b4 = Button(root, text="Medical Condition", command=Health)
+b4 = Button(root, text="Medical Condition", bg='yellow', command=Health)
 b4.pack()
 
-b5 = Button(root, text="Crime", command=CR)
+b5 = Button(root, text="Crime", bg='yellow', command=CR)
 b5.pack()
+
 
 root.mainloop()

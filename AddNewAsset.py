@@ -18,6 +18,13 @@ c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
 
+f = open("currentID.txt", "r")
+id = f.read()
+
+f = open("currentLogin.txt", "r")
+id2 = f.read()
+print(id)
+
 bkg = "white"
 
 # create a function to close the window
@@ -39,19 +46,19 @@ entry_Asset_ID = tk.Entry(frame, font=('verdana',12))
 
 
 def insertData():
-    ID = "G0037748"
     asset = entry_Asset.get()
     value = entry_Value.get()
     asset_id = entry_Asset_ID.get()
     
     try:
         insert_query = "INSERT INTO `Assets` VALUES (%s,%s,%s,%s);"
-        vals = (ID, asset, value, asset_id)
+        vals = (id, asset, value, asset_id)
         c.execute(insert_query, vals)
         db.commit()
         
-        select_query = 'insert into daily_activity values ("G00377746", "Added new asset", curdate(), curtime());'
-        c.execute(select_query)
+        select_query = 'insert into daily_activity values (%s, "Added new asset", curdate(), curtime());'
+        vals = (id2)
+        c.execute(select_query, vals)
         db.commit(); #commits changes to database
         messagebox.showwarning("Success", "New data assigned")
        

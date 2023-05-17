@@ -3,7 +3,7 @@ import tkinter  as tk
 from tkinter import * 
 from tkinter import messagebox as msg
 from sqlalchemy.exc import SQLAlchemyError
-
+from tkinter import ttk
 
 my_w = tk.Tk()
 my_w.geometry("400x250")
@@ -17,51 +17,55 @@ db = mysql.connector.connect(
 )
 
 c = db.cursor()
+f = open("currentID.txt", "r")
+id = f.read()
+
+f2 = open("currentLogin.txt", "r")
+id2 = f2.read()
+print(id)
 
 windowTitle = tk.Label(my_w, text='Health information', bg='white',
                         fg='black', font=('Tahoma',20), pady=15)
-bkimg = tk.PhotoImage(file = "C:/Users/Liam/Pictures/Hospital_logo.png")
-label2 = tk.Label(my_w,  image = bkimg, width = 200, height = 200,
-        bg = "white", fg = "black")
 
 windowTitle.grid(row = 0, column = 20)
-label2.grid(row = 1, column = 20) 
+
         
-def display():
-    c.execute("select conditions from medical_condition where ID = 'G0037748';")
-
-    i=3 
-    for student in c: 
-        for j in range(len(student)):
-            e = Entry(my_w, width=10, fg='blue') 
-            e.grid(row=i, column=j) 
-            e.insert(END, student[j])
+c.execute("select * from medical_condition where ID = %s;",[id])
+trv=ttk.Treeview(my_w,selectmode='browse')
+trv.grid(row = 2, column = 0, padx = 20, pady=20)
+trv["columns"] = ("1","2")
+trv['show']='headings'
+trv.column("1",width=80,anchor='c') 
+trv.column("2",width=80,anchor='c')
+trv.heading("1",text="ID")
+trv.heading("2",text="condition")
+for dt in c: 
+        trv.insert("", 'end',iid=dt[0],values=(dt[0],dt[1]))
          # show the delete button     
-            e = tk.Button(my_w,width=5,text='Del',fg='red',relief='ridge',
-            anchor="w",command=lambda k=student[1]:del_data(k))  
-            e.grid(row=i, column=8) 
-        i=i+1
-display()
-
-def del_data(s_id): # delete record 
+          
+e = tk.Button(my_w,width=5,text='Del',fg='red',relief='ridge',
+anchor="c",command=lambda: del_data())  
+e.grid(row=0, column=0) 
+def del_data(): # delete record 
+    selected_item = trv.selection()[0]
     try:
         my_var=msg.askyesnocancel("Delete Record",
            "Are you sure ? ",icon='warning')
         print(my_var)
         if my_var:
-            query="DELETE FROM medical_condition WHERE condition=%s"
-            my_data=[s_id]
+            query="DELETE FROM medical_condition WHERE Condition=%s"
+            my_data=[id]
             c.execute(query,my_data)
             db.commit(); #commits changes to database
-            
-            select_query = 'insert into daily_activity values ("G00377746", "Deleted condition", curdate(), curtime());'
-            c.execute(select_query)
+            trv.delete(selected_item)
+             
+            select_query = 'insert into daily_activity values ("%s", "Deleted condition", curdate(), curtime());'
+            val2 = (id2)
+            c.execute(select_query, val2)
             db.commit(); #commits changes to database
             msg.showwarning("Success", "Data Deleted")
             
-            for row in my_w.grid_slaves():# remove widgets
-                row.grid_forget()
-            display() # refresh the list 
+           
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         print(error)

@@ -17,11 +17,15 @@ db = mysql.connector.connect(
 c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
+f = open("currentID.txt", "r")
+id = f.read()
+
+f = open("currentLogin.txt", "r")
+id2 = f.read()
+print(id)
 
 bkg = "white"
-bkimg = tk.PhotoImage(file = "C:/Users/Liam/Pictures/Hospital_logo.png")
-label2 = tk.Label(root,  image = bkimg, 
-                bg = "white", fg = "black")
+
 
 # create a function to close the window
 def close_window():
@@ -35,17 +39,19 @@ entry_Illness = tk.Entry(frame, font=('verdana',12))
 
 
 def insertData():
-    ID = "G0037748"
+    
     illness = entry_Illness.get()
     
     try:
-       insert_query = "INSERT INTO `medical_condition` VALUES (%s,%s);"
-       vals = (ID, illness)
+       insert_query = "INSERT INTO `medical_condition` VALUES (%s, %s);"
+       vals = (id, illness)
        c.execute(insert_query, vals)
        db.commit()
-       select_query = 'insert into daily_activity values ("G00377746", "Added new medical condition", curdate(), curtime());'
-       c.execute(select_query)
-       db.commit(); #commits changes to database
+       
+       select_query = 'insert into daily_activity VALUES (%s, "Added new medical condition", curdate(), curtime());'
+       vals2 = (id2)
+       c.execute(select_query, vals2)
+       db.commit() #commits changes to database
        messagebox.showwarning("Success", "New data assigned")
        close_window()
     except Exception as e:
@@ -58,7 +64,7 @@ button_insert = tk.Button(root, text="insert", font=('verdana',14), bg='orange',
 btnCancel = tk.Button(root, text='Cancel', bg='red', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
 
 #Sets positins of buttons and text
-label2.grid(row=0, column=0)
+
 label_Illness.grid(row=2, column=0)
 entry_Illness.grid(row=2, column=1, pady=10, padx=10)
 

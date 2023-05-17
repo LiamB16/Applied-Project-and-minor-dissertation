@@ -17,6 +17,9 @@ db = mysql.connector.connect(
 c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
+f = open("currentID.txt", "r")
+id = f.read()
+print(id)
 
 bkg = "white"
 
@@ -30,31 +33,26 @@ label_School = tk.Label(frame, text="School Name: ", font=('verdana',12), bg=bkg
 entry_School = tk.Entry(frame, font=('verdana',12))
 
 label_Level = tk.Label(frame, text="Level: ", font=('verdana',12), bg=bkg)
-combo = ttk.Combobox(values=["secondary school", "university", "community college", "Medical School"])
+entry_Level = tk.Entry(frame, font=('verdana',12))
+
 
 label_Award = tk.Label(frame, text="Award: ", font=('verdana',12), bg=bkg)
-combo2 = ttk.Combobox(values=["N/A","diploma", "Level 7", "Level 8", "Doctorite"])
+entry_Award = tk.Entry(frame, font=('verdana',12))
 
 label_Grad = tk.Label(frame, text="Graduation Year: ", font=('verdana',12), bg=bkg)
-combo3 = ttk.Combobox(values=[ "N/A", "2023","2022","2021",
-"2020","2019","2018","2017","2016","2015","2014","2013","2012","2011", 
-"2010","2009","2008","2007","2006","2005","2004","2003","2002","2001",
-"2000","1999","1998","1997","1996","1995","1994","1993","1992","1991",
-"1990","1989","1988","1987","1986","1985","1984","1983","1982","1981",
-"1980","1979","1978","1977","1976","1975","1974","1973","1972","1971",
-"1970"])
+entry_Grad = tk.Entry(frame, font=('verdana',12))
 
 
 
 def insertData():
-    ID = "G00377746"
-    level = combo.get()
-    award = combo2.get()
-    grad = combo3.get()
+    school = entry_School.get()
+    level = entry_Level.get()
+    award = entry_Award.get()
+    grad = entry_Grad.get()
     
     
-    insert_query = "INSERT INTO `Education` VALUES values (%s,%s,%s,%s,%s)"
-    vals = (ID, level, award, grad)
+    insert_query = "INSERT INTO `Education` VALUES  (%s,%s,%s,%s,%s)"
+    vals = [id, school, level, award, grad]
     c.execute(insert_query, vals)
     db.commit()
     
@@ -72,13 +70,13 @@ label_School.grid(row=2, column=0)
 entry_School.grid(row=2, column=1, pady=10, padx=10)
 
 label_Level.grid(row=3, column=0)
-combo.grid(row=3, column=1)
+entry_Level.grid(row=3, column=1)
 
 label_Award.grid(row=4, column=0)
-combo2.grid(row=1, column=1, pady=10, padx=10)
+entry_Award.grid(row=4, column=1, pady=10, padx=10)
 
 label_Grad.grid(row=5, column=0)
-combo3.grid(row=5, column=1, pady=10, padx=10)
+entry_Grad.grid(row=5, column=1, pady=10, padx=10)
 
 button_insert.grid(row=6, column=0, columnspan=2)
 btnCancel.grid(row=6, column=1, columnspan=2)

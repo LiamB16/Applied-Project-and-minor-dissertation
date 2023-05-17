@@ -17,12 +17,12 @@ db = mysql.connector.connect(
 c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
+f = open("currentID.txt", "r")
+id = f.read()
+print(id)
 
 
 bkg = "white"
-bkimg = tk.PhotoImage(file = "C:/Users/Liam/Pictures/GardaSiochanaLogo.png")
-label2 = tk.Label(root,  image = bkimg, 
-                bg = "white", fg = "black")
 
 
 # create a function to close the window
@@ -38,9 +38,10 @@ entry_Crime = tk.Entry(frame, font=('verdana',12))
 
 
 def insertData():
-    id = "G0037748"
+    
     select_query = 'SELECT * FROM persons WHERE ID = "G00377760" AND occupation = "garda"; '
-    c.execute(select_query, id)            
+    #vals = (id)
+    c.execute(select_query)            
     guard = c.fetchone()
     print(guard)
     if guard is None:
@@ -67,7 +68,6 @@ button_insert = tk.Button(root, text="insert", font=('verdana',14), bg='orange',
 btnCancel = tk.Button(root, text='Cancel', bg='red', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)
 
 #Sets positins of buttons and text
-label2.grid(row=0, column=0)
 label_Crime.grid(row=2, column=0)
 entry_Crime.grid(row=2, column=1, pady=10, padx=10)
 

@@ -15,6 +15,9 @@ db = mysql.connector.connect(
 
 c = db.cursor()
 root = tk.Tk()
+f = open("currentLogin.txt", "r")
+id = f.read()
+print(id)
 # create a function to close the window
 def close_window():
     root.destroy()
@@ -38,16 +41,16 @@ class AssignAdmin_Form:
             
             self.btnsFrame = tk.Frame(self.frame, bg='#fff', padx=40, pady=15)
             
-            self.windowTitle = tk.Label(self.frame, text='Assign New Admin', bg='#fff',
+            self.windowTitle = tk.Label(self.frame, text='Assign New Admin password', bg='#fff',
                                         fg='blue', font=('Tahoma',20), pady=30)
             
             self.oldLabel = tk.Label(self.frame, text='Old password: ', bg='#fff',
                                         font=('Verdana',16))
-            self.oldTextbox = tk.Entry(self.frame, font=('Verdana',12), width=25,
+            self.oldTextbox = tk.Entry(self.frame,show='*', font=('Verdana',12), width=25,
                                             borderwidth='2', relief='ridge')
             self.newLabel = tk.Label(self.frame, text='New password: ', bg='#fff',
                                         font=('Verdana',16))
-            self.newTextbox = tk.Entry(self.frame, font=('Verdana',12), width=25,
+            self.newTextbox = tk.Entry(self.frame,show='*', font=('Verdana',12), width=25,
                                             borderwidth='2', relief='ridge')
             
             self.btnLogin = tk.Button(self.btnsFrame, text='Assign', bg='green',
@@ -72,9 +75,10 @@ class AssignAdmin_Form:
 
 
     def Assign(self):
-        id = self.oldTextbox.get()
-        select_query = 'SELECT * FROM persons WHERE ID = "G00377746" and Admin_password = AES_ENCRYPT(%s, "KEY"); '
-        val = [id]
+        password = self.oldTextbox.get()
+        print(password)
+        select_query = 'SELECT * FROM persons WHERE ID = %s and Admin_password = AES_ENCRYPT(%s, "KEY"); '
+        val = (id, password)
         c.execute(select_query, val)
                 
         oldpass = c.fetchone()
@@ -83,14 +87,15 @@ class AssignAdmin_Form:
             messagebox.showwarning("can't change password", "Old password is incorrect")
        
         else:
-            id2 = self.newTextbox.get()
-            query= "update persons SET Admin_password = AES_ENCRYPT('%s', 'KEY') where ID = 'G00377746';"
-            my_data=(id2)
+            password2 = self.newTextbox.get()
+            print(password2)
+            query= "update persons SET Admin_password = AES_ENCRYPT(%s, 'KEY') where ID = %s;"
+            my_data=(password2, id)
             c.execute(query,my_data)
             print(my_data)
             db.commit(); #commits changes to database
             messagebox.showwarning("Success", "New password assigned")
-            close_window()
+            #close_window()
 def main():
     AssignAdmin_window = AssignAdmin_Form(root)
     root.mainloop()

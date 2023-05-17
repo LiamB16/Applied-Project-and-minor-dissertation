@@ -18,6 +18,8 @@ c = db.cursor()
 
 root = tk.Tk()
 
+f = open("C:/Users/Liam/Desktop/Main project/currentLogin.txt",'w+',newline= '')
+
 # create a function to close the window
 def close_window():
     root.destroy()
@@ -101,6 +103,8 @@ class loginForm:
                vals = [username]
                c.execute(select_query, vals)
                db.commit(); #commits changes to database
+               f.write(username)
+               f.close()
                close_window()
                import menu
            except Exception as e:

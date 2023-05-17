@@ -17,7 +17,12 @@ db = mysql.connector.connect(
 c = db.cursor()
 root = tk.Tk()
 root.title("insert Data")
+f = open("currentID.txt", "r")
+id = f.read()
 
+f = open("currentLogin.txt", "r")
+id2 = f.read()
+print(id)
 bkg = "white"
 
 # create a function to close the window
@@ -38,26 +43,24 @@ entry_Value = tk.Entry(frame, font=('verdana',12))
 
 
 def insertData():
-    ID = "G0037748"
+    
     bank = entry_Bank.get()
     value = entry_Value.get()
     
-    try:
-        insert_query = "INSERT INTO `Bank` VALUES (%s,%s,%s);"
-        vals = (ID, bank, value)
-        c.execute(insert_query, vals)
-        db.commit()
+    
+    insert_query = "INSERT INTO `Bank` VALUES (%s,%s,%s);"
+    vals = (id, bank, value)
+    c.execute(insert_query, vals)
+    db.commit()
         
-        select_query = 'insert into daily_activity values ("G00377746", "Added new Bank", curdate(), curtime());'
-        c.execute(select_query)
-        db.commit(); #commits changes to database
-        messagebox.showwarning("Success", "New data assigned")
-        close_window()
-    except Exception as e:
-        print(e)
-        c.rollback()
-        c.close()
-        messagebox.showwarning("Invalid data  ")
+    select_query = 'insert into daily_activity values (%s, "Added new Bank", curdate(), curtime());'
+    vals = (id2)
+    c.execute(select_query, id2)
+    db.commit(); #commits changes to database
+    messagebox.showwarning("Success", "New data assigned")
+    close_window()
+    
+    messagebox.showwarning("Invalid data  ")
 
 button_insert = tk.Button(root, text="insert", font=('verdana',14), bg='orange', command=insertData)
 btnCancel = tk.Button(root, text='Cancel', bg='red', font=('Verdana',12), fg='#fff', padx=25, pady=10, command=close_window)

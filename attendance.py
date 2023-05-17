@@ -1,71 +1,106 @@
-import cv2 #pip install opencv-python
-import face_recognition #pip install cspan, install dlib, install face_recognition
+import face_recognition
+import cv2
 import numpy as np
-import os
-import glob
 import csv
 from datetime import datetime
+import os
 
 video_capture = cv2.VideoCapture(0)
-#reads in image and converts it into bimary data
-img = face_recognition.load_image_file("G00377746.jpg")
-rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-img_encoding = face_recognition.face_encodings(rgb_img)[0]
-
-#sorts binary code into an array
-known_faces_encoding = [
-    img_encoding
+dataset="images"
+known_face_names = [
+    
 ]
-#sorts names into an array
-known_faces_names = [
-    "Liam"
+known_face_encodings = [
+    
 ]
+images=os.listdir(dataset)
+for image in images:
+    path=os.path.join(dataset, image)
+    print(path)
+    known_image=face_recognition.load_image_file(path)
+    known_encode=face_recognition.face_encodings(known_image)[0]
+    names=image.split(".")[0]
+    known_face_names.append(names)
+    known_face_encodings.append(known_encode)
 
-students = known_faces_names.copy()
 
-face_location = []
-face_encoding = []
+
+
+# Initialize some variables
+face_locations = []
+face_encodings = []
 face_names = []
-s = True
-# gets cuurent date
-now = datetime.now()
-current_date = now.strftime("%D-%M-%Y")
+process_this_frame = True
 
-# opens and creates file
-f = open("C:/Users/Liam/Desktop/Main project/current_date.csv",'w+',newline= '')
+now = datetime.now()
+current_date = now.strftime("%D")
+
+f = open("C:/Users/Liam/Desktop/Main project/current_date.csv",'a+',newline= '')
 lnwriter = csv.writer(f)
-#runs video camera 
+
 while True:
-    _,frame = video_capture.read()
-    small_frame = cv2.resize(frame,(0,0),fx=0.25,fy=0.25)
-    rgb_small_frame = small_frame[:,:,::-1]
-    if s:
+    # Grab a single frame of video
+    ret, frame = video_capture.read()
+
+    # Only process every other frame of video to save time
+    if process_this_frame:
+        # Resize frame of video to 1/4 size for faster face recognition processing
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
+        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+        rgb_small_frame = small_frame[:, :, ::-1]
+        
+        # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
         face_names = []
         for face_encoding in face_encodings:
-            matches = face_recognition.compare_faces(known_faces_encoding, face_encodings)
-            name = ""
-            face_distance = face_recognition.face_distance(known_faces_encoding, face_encoding)
-            best_match_index = np.argmin(face_distance)
+            # See if the face is a match for the known face(s)
+            matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+            name = "Unknown"
+            
+
+            # Or instead, use the known face with the smallest distance to the new face
+            face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+            best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
-                name = known_faces_names[best_match_index]
-             
-            face_names.append(name)
-            if name in known_faces_names:
-                if name in students:
-                    students.remove(name)
-                    print(students)
-                    #records hour minutes and seconds person was seen
-                    current_time = now.strftime("%H-%M-%S")
-                    #writes time to csv fil
-                    lnwriter.writerrow([name, current_time])
-        cv2.imshow("attendance system", frame)
-        #kills camera
-        if cv2.waitKey(1) == ord("q"):
-           break
-       
-    video_capture.release()
-    cv2.destroyAllWindows()
-    f.close()
+                name = known_face_names[best_match_index]
+                 #records hour minutes and seconds person was seen
+                current_time = now.strftime("%H-%M-%S")
+                print(current_time)
+                #writes time to csv fil
+                lnwriter.writerow([name, current_time, current_date])
+                break
     
+            face_names.append(name)
+             
+    process_this_frame = not process_this_frame
+
+
+    # Display the results
+    for (top, right, bottom, left), name in zip(face_locations, face_names):
+        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+        top *= 4
+        right *= 4
+        bottom *= 4
+        left *= 4
+
+        # Draw a box around the face
+        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+        # Draw a label with a name below the face
+        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+        font = cv2.FONT_HERSHEY_DUPLEX
+        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+    # Display the resulting image
+    cv2.imshow('Video', frame)
+
+    # Hit 'q' on the keyboard to quit!
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release handle to the webcam
+video_capture.release()
+cv2.destroyAllWindows()
